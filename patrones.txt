@@ -1,30 +1,96 @@
-# Patrones heurísticos de detección - AGF USB Shield
-# Formato: NOMBRE|REGEX|PELIGROSIDAD|TIPO
-# Tipos: NombreArchivo, Extension, RutaCompleta, Contenido, Atributos
-#
 # ============================================
-# ACCESOS DIRECTOS FALSOS (LNK)
+# PATRONES HEURÍSTICOS USB REALES - 50 NUEVOS
 # ============================================
-Acceso Directo Falso - CMD|cmd\.exe.*attrib.*\-h.*\+s|10|Contenido
-Acceso Directo Falso - PowerShell|powershell.*\-enc.*|10|Contenido
-Acceso Directo Falso - WScript|WScript\.Shell.*CreateObject|9|Contenido
-#
+
+# AUTORUN MALICIOSO
+Autorun.Open|open\\s*=\\s*.*\\.(exe|bat|cmd|com|pif|scr|vbs|js)$|10|Contenido
+Autorun.ShellExecute|shellexecute\\s*=\\s*.*\\.(exe|bat|cmd|com|pif|scr|vbs|js)$|10|Contenido
+Autorun.Run|run\\s*=\\s*.*\\.(exe|bat|cmd|com|pif|scr|vbs|js)$|9|Contenido
+Autorun.IconMal|icon\\s*=\\s*.*\\.(exe|dll|scr).*,[0-9]+$|7|Contenido
+
+# VIRUS DE ACCESOS DIRECTOS
+Shortcut.CMD|cmd\\.exe.*\\-c.*start.*|10|Contenido
+Shortcut.Attrib|attrib\\s+\\+h.*\\+s|9|Contenido
+Shortcut.VBS|wscript.*\\.vbs|9|Contenido
+Shortcut.Rundll32|rundll32\\.exe.*\\.dll.*#[0-9]|9|Contenido
+Shortcut.PowerShell|powershell\\.(exe)?\\s+\\-.*\\-w\\s+hidden|10|Contenido
+
+# NOMBRES DE ARCHIVOS SOSPECHOSOS
+SvchostFake|^(svchost|svch0st|svchosts?|svc\\w+)\\.exe$|9|NombreArchivo
+CsrsFake|^(csrss|csrs?s?|csr\\w+)\\.exe$|9|NombreArchivo
+WinlogonFake|^(winlogon|winlog0n|winlog\\w+)\\.exe$|9|NombreArchivo
+LsassFake|^(lsass|lsas?s?|lsa\\w+)\\.exe$|9|NombreArchivo
+ExplorerFake|^(expl0rer|explor\\w+|iexplore)\\.exe$|8|NombreArchivo
+ServicesFake|^(services?|servic\\w+)\\.exe$|8|NombreArchivo
+
+# RECYCLER Y CARPETAS FALSAS
+RecyclerExe|RECYCLER\\[A-F0-9]{4,6}\\.exe|10|NombreArchivo
+NewFolderExe|New\\s*Folder\\.exe|9|NombreArchivo
+FolderFake|^(Folder|NewFolder|FolderIcon)\\.exe$|8|NombreArchivo
+
+# DOBLE EXTENSIÓN
+DobleExtDoc|\\.(doc|docx|xls|xlsx|ppt|pptx|pdf|txt)\\.(exe|scr|bat|cmd|pif|com)$|9|NombreArchivo
+DobleExtMedia|\\.(jpg|jpeg|png|gif|mp3|mp4|avi|mkv|zip|rar)\\.(exe|scr|bat|cmd)$|9|NombreArchivo
+
+# SCRIPTS MALICIOSOS
+VBSHiddeen|CreateObject\\(["\']?(WScript|Scripting)\\.Shell["\']?\\)|9|Contenido
+JSExec|eval\\(|9|Contenido
+PSExec|Invoke-Expression|10|Contenido
+BatchExec|@echo\\s+off\\s*\\r?\\n.*(copy|xcopy|attrib|del|rd)|8|Contenido
+
+# RUTAS SOSPECHOSAS
+TempUSB|\\\\Temp?\\\\.*\\.(exe|bat|cmd|vbs|js|scr|pif)$|8|RutaCompleta
+AppDataUSB|AppData.*Temp.*\\.(exe|dll|scr)$|8|RutaCompleta
+StartupUSB|Startup.*\\.(exe|bat|cmd)$|9|RutaCompleta
+RecentUSB|Recent.*\\.(exe|lnk|url)$|7|RutaCompleta
+
+# EJECUTABLES FALSOS DE SISTEMA
+TaskmgrFake|^taskmgr\\.exe$|8|NombreArchivo
+CmdFake|^cmd\\.(exe)?$|7|NombreArchivo
+RegeditFake|^regedit\\.(exe)?$|8|NombreArchivo
+MsconfigFake|^msconfig\\.exe$|8|NombreArchivo
+
+# MINEROS Y RANSOMWARE
+MinerUSB|([^a-zA-Z0-9]xmrig|[^a-zA-Z0-9]minerd)\\.exe|10|NombreArchivo
+RansomNote|^_readme\\.txt$|9|NombreArchivo
+DecryptUSB|decrypt|9|NombreArchivo
+
+# USB FIXERS FALSOS
+UsbFixFake|^(UsbFix|UsbCleaner|UsbSecurity|UsbGuard)\\.exe$|9|NombreArchivo
+AntivirusFake|^(Antivirus|Security|Scanner|Cleaner|Fixer|Helper)\\.exe$|8|NombreArchivo
+
+# EXPLOITS CONOCIDOS
+LNKExploit|.*\\.lnk.*cmd\\.exe.*\\/c|10|Contenido
+CVE2021LNK|.*\\.lnk.*powershell.*\\-.*noni|10|Contenido
+
+# ARCHIVOS DE CONFIGURACIÓN MALICIOSOS
+AutorunInfModificado|\\[AutoRun\\]|\\[autorun\\]|8|Contenido
+DesktopIniMal|command\\s*=|9|Contenido
+
+# POWER EXPLOITS
+PowerHide|powershell\\s+\\-WindowStyle\\s+Hidden|10|Contenido
+PowerExec|powershell\\s+\\-ExecutionPolicy\\s+Bypass|10|Contenido
+
+# BAT MALICIOSOS
+BatchLoop|:\\w+\\r?\\n\\w+\\.bat|8|Contenido
+BatchCopy|copy\\s+.*\\s+.*\\:\\\\|9|Contenido
+
+# HTA Y MACROS
+HTAMalicious|MSXML2\\.XMLHTTP|9|Contenido
+HTAScript|<script\\s+language=\\"vbscript|9|Contenido
+
+# DROPERS Y LOADERS
+DropperPat|^(Loader|Dropper|Runner|Injector|Launcher|Starter)\\.exe$|9|NombreArchivo
+
+# STEALERS
+StealerPat|^(Stealer|Keylogger|Sniffer)\\.exe$|10|NombreArchivo
+
+# CRYPTO MALWARE
+CryptoPat|^(wallet|crypto|bitcoin|monero)\\.exe$|9|NombreArchivo
+
+# RATs (Remote Access Trojans)
+RATPat|^(netcat|nc|backdoor|trojan)\\.exe$|10|NombreArchivo
+
 # ============================================
-# EXTENSIONES ENGAÑOSAS
-# ============================================
-Doble Extension - Imagen|\w+\.(jpg|jpeg|png|gif|bmp|tiff)\.(exe|scr|bat|cmd|com|pif)$|8|NombreArchivo
-Doble Extension - Documento|\w+\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt)\.(exe|scr|bat|cmd|com|pif)$|8|NombreArchivo
-Doble Extension - Video|\w+\.(mp4|avi|mkv|mov|wmv|flv)\.(exe|scr|bat|cmd|com|pif)$|8|NombreArchivo
-#
-# ============================================
-# NOMBRES DE SISTEMA FALSOS
-# ============================================
-Nombre Sistema - svchost|^(svchost|svchosts|svch0st|svchost\.exe)\.exe$|9|NombreArchivo
-Nombre Sistema - csrss|^(csrss|csrsss|csr0ss|csrss\.exe)\.exe$|9|NombreArchivo
-Nombre Sistema - winlogon|^(winlogon|winlog0n|winlogonn|winlogon\.exe)\.exe$|9|NombreArchivo
-#
-# ============================================
-# FIN DE PATRONES
-# Ultima actualizacion: 2025-03-09
-# Total de patrones: 9
-# ============================================
+# Total patrones USB: 50 NUEVOS
+# Ultima actualizacion: 2026-03-08

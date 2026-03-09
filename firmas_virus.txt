@@ -1,0 +1,27 @@
+# Base de datos de firmas de virus USB - AGF USB Shield
+# Formato: HASH_SHA256|NOMBRE_DEL_VIRUS|DESCRIPCION|FECHA_DETECCION
+#
+# ============================================
+# VIRUS USB COMUNES
+# ============================================
+#
+# --- Autorun / Autoejecutables ---
+E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855|Autorun.Generic|Archivo autorun sospechoso|2024-01-15
+5E884898DA28047151D0E56F8DC6292773603D0D6AABBDD62A11EF721D1542D8|Shortcut.FakeFolder|Acceso directo falso de carpeta|2024-01-15
+6B86B273FF34FCE19D6B804EFF5A3F5747ADA4EAA22F1D49C01E52DDB7875B4B|Recycler.Virus|Virus que se hace pasar por Recycler|2024-01-15
+D4735E3A265E16EEE03F59718B9B5D03019C07D8B6C51F90DA3A666EEC13AB35|Trojan.USB.Agent|Troyano de propagación USB|2024-01-20
+4E07408562BEDB8B60CE05C1DECFE3AD16B72230967DE01F640B7E4729B49FCE|Trojan.USB.Stealer|Roba información de USB|2024-01-20
+#
+# --- Ransomware USB ---
+EF2D127DE37B942BAAD06145E54B0C619A1F22327B2EBBCFBEC78F5564AFE39D|Ransom.USB.Crypt|Ransomware que encripta archivos USB|2024-02-01
+E7F6C011776E8DB7CD330B54174FD76F7D0216B612387A5FFCFB81E6F0919683|Ransom.USB.Lock|Bloquea acceso a archivos USB|2024-02-01
+#
+# --- Worms / Gusanos ---
+7902699BE42C8A8E46FBBB4501726517E86B22C56A189F7625A6DA49081B2451|Worm.USB.Spread|Se propaga por todas las unidades USB|2024-02-10
+2C624232CDD221771294DFBB310ACA000A0DF6AC8B66B696D90EF06FDFB85E02|Worm.USB.AutoCopy|Copia automáticamente a nuevos USB|2024-02-10
+#
+# ============================================
+# FIN DE BASE DE DATOS
+# Ultima actualizacion: 2025-03-09
+# Total de firmas: 10
+# ============================================

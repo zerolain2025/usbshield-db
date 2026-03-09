@@ -1,0 +1,30 @@
+# Patrones heurísticos de detección - AGF USB Shield
+# Formato: NOMBRE|REGEX|PELIGROSIDAD|TIPO
+# Tipos: NombreArchivo, Extension, RutaCompleta, Contenido, Atributos
+#
+# ============================================
+# ACCESOS DIRECTOS FALSOS (LNK)
+# ============================================
+Acceso Directo Falso - CMD|cmd\.exe.*attrib.*\-h.*\+s|10|Contenido
+Acceso Directo Falso - PowerShell|powershell.*\-enc.*|10|Contenido
+Acceso Directo Falso - WScript|WScript\.Shell.*CreateObject|9|Contenido
+#
+# ============================================
+# EXTENSIONES ENGAÑOSAS
+# ============================================
+Doble Extension - Imagen|\w+\.(jpg|jpeg|png|gif|bmp|tiff)\.(exe|scr|bat|cmd|com|pif)$|8|NombreArchivo
+Doble Extension - Documento|\w+\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt)\.(exe|scr|bat|cmd|com|pif)$|8|NombreArchivo
+Doble Extension - Video|\w+\.(mp4|avi|mkv|mov|wmv|flv)\.(exe|scr|bat|cmd|com|pif)$|8|NombreArchivo
+#
+# ============================================
+# NOMBRES DE SISTEMA FALSOS
+# ============================================
+Nombre Sistema - svchost|^(svchost|svchosts|svch0st|svchost\.exe)\.exe$|9|NombreArchivo
+Nombre Sistema - csrss|^(csrss|csrsss|csr0ss|csrss\.exe)\.exe$|9|NombreArchivo
+Nombre Sistema - winlogon|^(winlogon|winlog0n|winlogonn|winlogon\.exe)\.exe$|9|NombreArchivo
+#
+# ============================================
+# FIN DE PATRONES
+# Ultima actualizacion: 2025-03-09
+# Total de patrones: 9
+# ============================================

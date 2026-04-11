@@ -92,5 +92,5 @@ CryptoPat|^(wallet|crypto|bitcoin|monero)\\.exe$|9|NombreArchivo
 RATPat|^(netcat|nc|backdoor|trojan)\\.exe$|10|NombreArchivo
 
 # ============================================
-# Total patrones USB: 50 NUEVOS
-# Ultima actualizacion: 2026-03-08
+# Total patrones USB: 51 NUEVOS
+# Ultima actualizacion: 2026-04-10

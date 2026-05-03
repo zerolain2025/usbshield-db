@@ -90,6 +90,24 @@ CryptoPat|^(wallet|crypto|bitcoin|monero)\\.exe$|9|NombreArchivo
 
 # RATs (Remote Access Trojans)
 RATPat|^(netcat|nc|backdoor|trojan)\\.exe$|10|NombreArchivo
+# ARCHIVOS SIN EXTENSION O RAROS
+SinExtension|^[^.]+$|7|NombreArchivo
+ExtensionRara|\.(e_e|ex_|tmp|dat|bin)$|6|NombreArchivo
+
+# NOMBRES IGUALES A CARPETAS COMUNES
+CarpetaExe|^(Mis Documentos|Mis Imagenes|Descargas|Documentos|Fotos|Videos|Musica)\.exe$|9|NombreArchivo
+
+# ARCHIVOS OCULTOS EN USB
+ArchivoOculto|^\.|7|NombreArchivo
+
+# EJECUTABLES PORTABLES SOSPECHOSOS
+PortableFake|^(Portable|PortableApps|App|Program)\.exe$|7|NombreArchivo
+
+# ARCHIVOS CON DOBLE ESPACIO
+DobleEspacio|  \.|6|NombreArchivo
+
+# ARCHIVOS CON CARACTERES ESPECIALES
+CaracteresRaros|[^\x20-\x7E]|5|NombreArchivo
 
 # ============================================
 # Total patrones USB: 51 NUEVOS

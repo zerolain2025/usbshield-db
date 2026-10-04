@@ -1,0 +1,188 @@
+# Patrones heuristicos de deteccion - AGF USB Shield v2.0
+# Formato: NOMBRE|REGEX|PELIGROSIDAD|TIPO
+# Tipos: NombreArchivo, Extension, RutaCompleta, Contenido, Atributos
+#
+# ============================================
+# ACCESOS DIRECTOS FALSOS (LNK)
+# ============================================
+LNK - CMD oculto|cmd\.exe.*attrib.*\-h.*\+s|10|Contenido
+LNK - PowerShell encoded|powershell.*\-enc.*|10|Contenido
+LNK - WScript Shell|WScript\.Shell.*CreateObject|9|Contenido
+LNK - Rundll32|rundll32\.exe.*\.dll.*#1|9|Contenido
+LNK - MSHTA|mshta\.exe.*javascript|9|Contenido
+LNK - BitsAdmin|bitsadmin.*\/transfer|8|Contenido
+LNK - CertUtil decode|certutil.*-decode|8|Contenido
+LNK - WMIC|wmic\.exe.*process.*call\s+create|8|Contenido
+#
+# ============================================
+# EXTENSIONES ENGANOSAS (Doble extension)
+# ============================================
+DobleExt - Imagen|\w+\.(jpg|jpeg|png|gif|bmp|tiff)\.(exe|scr|bat|cmd|com|pif)$|8|NombreArchivo
+DobleExt - Documento|\w+\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt)\.(exe|scr|bat|cmd|com|pif)$|8|NombreArchivo
+DobleExt - Video|\w+\.(mp4|avi|mkv|mov|wmv|flv)\.(exe|scr|bat|cmd|com|pif)$|8|NombreArchivo
+DobleExt - Audio|\w+\.(mp3|wav|flac|aac|ogg)\.(exe|scr|bat|cmd|com|pif)$|8|NombreArchivo
+DobleExt - Comprimido|\w+\.(zip|rar|7z|tar|gz)\.(exe|scr|bat|cmd|com|pif)$|8|NombreArchivo
+DobleExt - Triple|\.(exe|scr|bat)\.(exe|scr|bat)\.(exe|scr|bat)$|9|NombreArchivo
+DobleExt - Espacio|.+\.(exe|scr|bat)\s{2,}\.exe$|8|NombreArchivo
+#
+# ============================================
+# NOMBRES DE SISTEMA FALSOS
+# ============================================
+FakeName - svchost|^(svchost|svchosts|svch0st|svchost\.exe)\.exe$|9|NombreArchivo
+FakeName - csrss|^(csrss|csrsss|csr0ss|csrss\.exe)\.exe$|9|NombreArchivo
+FakeName - winlogon|^(winlogon|winlog0n|winlogonn|winlogon\.exe)\.exe$|9|NombreArchivo
+FakeName - services|^(services|servicess|service|services\.exe)\.exe$|9|NombreArchivo
+FakeName - lsass|^(lsass|lsasss|lsas|lsass\.exe)\.exe$|9|NombreArchivo
+FakeName - smss|^(smss|smsss|sms|smss\.exe)\.exe$|9|NombreArchivo
+FakeName - explorer|^(expl0rer|explorerr|iexplore|explorer\.exe)\.exe$|8|NombreArchivo
+FakeName - taskmgr|^(taskmg r|taskmgrr|taskmg|taskmgr\.exe)\.exe$|8|NombreArchivo
+FakeName - spoolsv|^(spoolsv|sp0olsv|spoolsv\.exe)\.exe$|8|NombreArchivo
+FakeName - conhost|^(conhost|conh0st|conhost\.exe)\.exe$|8|NombreArchivo
+#
+# ============================================
+# SCRIPTS Y MACROS MALICIOSOS
+# ============================================
+Script - VBS|.+\.vbs$|6|Extension
+Script - JavaScript|.+\.js$|6|Extension
+Script - PowerShell|.+\.ps1$|7|Extension
+Script - Batch|.+\.bat$|5|Extension
+Script - CMD|.+\.cmd$|5|Extension
+Script - WSH|.+\.wsh$|6|Extension
+Script - HTA|.+\.hta$|7|Extension
+Script - PY|.+\.py$|4|Extension
+Script - PHP|.+\.php$|4|Extension
+Script - Perl|.+\.pl$|4|Extension
+Script - Ruby|.+\.rb$|4|Extension
+Script - JSE|.+\.jse$|6|Extension
+Script - VBE|.+\.vbe$|6|Extension
+#
+# ============================================
+# RUTAS SOSPECHOSAS
+# ============================================
+Path - Temp folder|\\temp\\.*\.(exe|dll|bat|cmd)$|6|RutaCompleta
+Path - AppData Temp|\\AppData\\Local\\Temp\\.*\.(exe|dll|bat|cmd)$|7|RutaCompleta
+Path - Win Temp|\\Windows\\Temp\\.*\.(exe|dll|bat|cmd)$|7|RutaCompleta
+Path - Recent|\\Recent\\.*\.(exe|lnk)$|5|RutaCompleta
+Path - Startup|\\Startup\\.*\.(exe|bat|cmd|vbs|ps1)$|7|RutaCompleta
+Path - Downloads|\\Downloads\\.*\.(exe|scr|bat|cmd)$|5|RutaCompleta
+Path - Roaming Autorun|\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\.*\.(exe|bat|cmd|vbs|ps1)$|8|RutaCompleta
+Path - USB Root exe|^[A-Z]:\\.*\.exe$|5|RutaCompleta
+Path - Recycler|\\[Rr]ecycl[ae].*\\.*\.(exe|dll|bat)$|7|RutaCompleta
+#
+# ============================================
+# AUTORUN MALICIOSO
+# ============================================
+Autorun - Open exe|open\s*=\s*.*\.(exe|bat|cmd|com|pif)$|10|Contenido
+Autorun - ShellExecute|shellexecute\s*=\s*.*\.(exe|bat|cmd|com|pif)$|10|Contenido
+Autorun - Action exe|action\s*=\s*.*\.(exe|bat|cmd|com|pif)$|9|Contenido
+Autorun - Icon malicioso|icon\s*=\s*.*\.(exe|dll).*,[0-9]+|6|Contenido
+Autorun - Label trampa|label\s*=\s*(removable|usb|drive|disk|memory)|4|Contenido
+Autorun - UseAutoPlay|UseAutoPlay=1|5|Contenido
+#
+# ============================================
+# DESCARGA REMOTA / C2
+# ============================================
+Net - HTTP download|(Invoke-WebRequest|curl|wget|UrlDownloadToFile|XMLHTTP)\s|7|Contenido
+Net - FTP download|(ftp|-open)\s+.*\.(exe|dll|ps1|bat)$|7|Contenido
+Net - Net use remote|net\s+(use|view)\s+\\\\|6|Contenido
+Net - C2 callback|http[s]?://[^\s]*\.(com|org|net|xyz|top|ru|cn)/[^\s]*\.(php|aspx|exe)$|8|Contenido
+Net - Base64 decode|FromBase64String|7|Contenido
+Net - IP literal connection|\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}:\\d+|8|Contenido
+#
+# ============================================
+# PERSISTENCIA / REGISTRO
+# ============================================
+Persist - Registry Run|HKCU.*\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run|9|Contenido
+Persist - Registry RunOnce|RunOnce.*\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion|9|Contenido
+Persist - Scheduled Task|schtasks.*\/create|8|Contenido
+Persist - WMI persistence|__EventFilter.*__FilterToConsumerBinding|9|Contenido
+Persist - Startup folder|\\Startup\\.*\.(lnk|url)|7|Contenido
+Persist - Service install|sc\s+create|8|Contenido
+#
+# ============================================
+# COMANDOS DE ATAQUE COMUNES
+# ============================================
+Attack - Attrib hide|attrib\s+\+[hdsr].*|6|Contenido
+Attack - Copy self|copy\s+.*\.exe\s+[A-Z]:\\|7|Contenido
+Attack - Disable UAC|reg\s+.*EnableLUA.*0|8|Contenido
+Attack - Disable Defender|reg\s+.*DisableAntiSpyware.*1|9|Contenido
+Attack - Disable TaskMgr|reg\s+.*DisableTaskMgr.*1|6|Contenido
+Attack - Volume shadow delete|vssadmin.*Delete Shadows|7|Contenido
+Attack - BCDEdit recovery|bcdedit.*recoveryenabled.*No|7|Contenido
+Attack - Takeown|takeown.*\/f|7|Contenido
+Attack - ICACLS grant|icacls.*\/(grant|deny)|6|Contenido
+Attack - WMIC process|wmic.*process.*call\s+create.*(exe|bat|cmd)|7|Contenido
+#
+# ============================================
+# POWERSHELL OFENSIVO
+# ============================================
+PS - ExecutionPolicy bypass|powershell.*-ExecutionPolicy\s+Bypass|9|Contenido
+PS - Hidden window|powershell.*-WindowStyle\s+Hidden|8|Contenido
+PS - Download and exec|IEX\s*\(\s*\(New-Object|9|Contenido
+PS - Encoded command|powershell.*-EncodedCommand|10|Contenido
+PS - Reflective load|\[Reflection\.Assembly\]::Load|9|Contenido
+PS - WMI query|Get-WmiObject|5|Contenido
+PS - Invoke-Mimikatz|Invoke-Mimikatz|10|Contenido
+PS - Empire stager|Invoke-Empire|10|Contenido
+#
+# ============================================
+# HISURFICACION DE ARCHIVOS
+# ============================================
+Hidden - System file|.*|6|Atributos
+Hidden - Exe oculto|.*|7|Atributos
+Hidden - Script oculto|.*|6|Atributos
+Hidden - Batch oculto|.*|6|Atributos
+Hidden - LNK oculto|.*|8|Atributos
+#
+# ============================================
+# ARCHIVOS DE CONFIGURACION MALICIOSOS
+# ============================================
+Config - Desktop.ini malicioso|desktop\.ini|5|NombreArchivo
+Config - malicious INF|\.inf$.*(exe|dll)|5|Extension
+Config - CFG with exe|\.cfg$|3|Extension
+#
+# ============================================
+# DETECCION DE PAQUETES / ENCRIPTACION
+# ============================================
+Packed - UPX|UPX!|5|Contenido
+Packed - MPRESS|MPRESS|5|Contenido
+Packed - VMProtect|VMProtect|6|Contenido
+Packed - Themida|Themida|6|Contenido
+Packed - Enigma|Enigma\s+protector|5|Contenido
+#
+# ============================================
+# DISPOSITIVOS / HARDWARE SOSPECHOSOS
+# ============================================
+USB - Multiple autorun|autorun\.inf.*autorun\.inf|6|NombreArchivo
+USB - Folder replicator|.*-copia.*\.exe$|7|NombreArchivo
+USB - Thumbs db|thumbs\.db.*\.exe$|9|NombreArchivo
+#
+# ============================================
+# PROXY / EVASION
+# ============================================
+Evasion - Double extension space|.+\.(exe|scr|bat)\s\.(exe|scr|bat)$|8|NombreArchivo
+Evasion - Unicode RLO|.*\u202E.*|9|NombreArchivo
+Evasion - Null byte|.*%00.*|9|NombreArchivo
+Evasion - Readme.txt|readme.*\.(exe|scr|bat)$|7|NombreArchivo
+#
+# ============================================
+# ADICIONALES USB ESPECIFICOS
+# ============================================
+USB - Recycler folder|^[A-Z]:\\[Rr]ecycl[ae].*$|6|RutaCompleta
+USB - System Volume|^[A-Z]:\\System Volume Information.*$|5|RutaCompleta
+USB - FOUND.xxx|^[A-Z]:\\[Ff]ound\.\d{3}.*$|5|RutaCompleta
+USB - Hidden folder|^[A-Z]:\\[\._].*$|4|RutaCompleta
+USB - Mass exe root|^[A-Z]:\\[^\\]*\.exe$|6|RutaCompleta
+#
+# ============================================
+USB - Autorun inf|^autorun\.inf$|9|NombreArchivo
+USB - Fake folder exe|^[A-Z]:\\.*(Nueva carpeta|New Folder|Documentos|Fotos|Videos).*\.exe$|9|RutaCompleta
+USB - Double ext doc exe|^.+\.(pdf|doc|docx|xls|xlsx|jpg|mp4)\.exe$|9|NombreArchivo
+USB - VBS en raiz|^[A-Z]:\\[^\\]*\.vbs$|7|RutaCompleta
+USB - JS en raiz|^[A-Z]:\\[^\\]*\.js$|7|RutaCompleta
+USB - BAT en raiz|^[A-Z]:\\[^\\]*\.bat$|7|RutaCompleta
+#
+# FIN DE PATRONES
+# Ultima actualizacion: 2025-06-01
+# Total de patrones: 96
+# ============================================

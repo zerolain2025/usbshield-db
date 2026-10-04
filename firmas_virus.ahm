@@ -208,6 +208,8 @@ c963c83bc1fa7d5378c453463ce990d85858b7f96c08e9012a7ad72ea063f31e|Trojan.Win32.Em
 e7ebac9ba2548db5e772f1a0d657acf0f61425e67cf326bea142a1f1c13a077d|Trojan.Win32.RedHook|RedHook malware USB|2026-10-04
 6d55f25222831cce73fd9a64a8e5a63b002522dc2637bd2704f77168c7c02d88|Trojan.Win32.Emotet.xlsm|Emotet Excel macro|2026-10-04
 #
+2c180950af33f3696da081e258b378a57ba19abf5da4dfc92e7976e6f4b278ed|Trojan.Win32.Emotet.ESET6|Emotet ESET IOC 6|2026-10-04
+#
 # FIN DE BASE DE DATOS
 # Ultima actualizacion: 2025-06-01
 # --- NUEVAS 2026-10-04 (20 IOCs reales OTX/MalwareBazaar/ESET) ---
